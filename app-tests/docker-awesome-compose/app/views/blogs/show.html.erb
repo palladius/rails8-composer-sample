@@ -1,0 +1,43 @@
+<% content_for :title, "Showing blog" %>
+
+<div class="md:w-2/3 w-full">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+  <h1 class="font-bold text-4xl">Showing blog</h1>
+
+  <%= render @blog %>
+
+  <% if @blog.image.attached? %>
+    <%= image_tag @blog.image, class: "mt-4 w-full h-64 object-cover rounded-md" %>
+  <% end %>
+
+  <div class="mt-8">
+    <h2 class="font-bold text-2xl">Comments</h2>
+    <div id="comments" class="mt-4">
+      <% @blog.comments.each do |comment| %>
+        <%= render comment %>
+      <% end %>
+    </div>
+
+    <h3 class="font-bold text-xl mt-8">Add a Comment</h3>
+    <%= form_with model: [@blog, @blog.comments.build], local: true, class: "mt-4" do |form| %>
+      <div class="mb-4">
+        <%= form.label :author, class: "block text-gray-700 text-sm font-bold mb-2" %>
+        <%= form.text_field :author, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+      </div>
+      <div class="mb-4">
+        <%= form.label :body, class: "block text-gray-700 text-sm font-bold mb-2" %>
+        <%= form.text_area :body, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32" %>
+      </div>
+      <div class="flex items-center justify-between">
+        <%= form.submit "Create Comment", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline cursor-pointer" %>
+      </div>
+    <% end %>
+  </div>
+
+  <%= link_to "Edit this blog", edit_blog_path(@blog), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <%= link_to "Back to blogs", blogs_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <%= button_to "Destroy this blog", @blog, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2", class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+</div>
