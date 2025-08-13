@@ -11,6 +11,9 @@
 # Create a sample Post
 post1 = Post.find_or_create_by!(title: "My First Blog Post", content: "This is the content of my first blog post. It's very exciting!")
 
+# TODO add sample-images/ruby-ferma-toga.jpeg to the post.
+post1.image.attach(io: File.open(Rails.root.join("db", "sample-images", "ruby-ferma-toga.jpeg")), filename: "ruby-ferma-toga.jpeg")
+
 # Add comments to the first post
 post1.comments.find_or_create_by!(author: "Alice", body: "Great post!")
 post1.comments.find_or_create_by!(author: "Bob", body: "I learned a lot from this.")
