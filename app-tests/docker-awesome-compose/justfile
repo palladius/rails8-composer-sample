@@ -1,15 +1,25 @@
+
+# Shows targets
+list:
+  just -l
+
+# docker compose UP
 dev:
   docker compose up
+up: dev
 
+# runs "rails console" - requires WEB to be up
 console:
   docker compose exec web rails console
 
 db-create:
   docker compose exec web rails db:create
 
+# migrates the WEB app.
 db-migrate:
   docker compose exec web rails db:migrate
 
+# seeds the WEB app with sample data
 db-seed:
   docker compose exec web rails db:seed
 
@@ -22,5 +32,12 @@ lint:
 build:
   docker compose build
 
+force-rebuild:
+  docker compose build --no-cache
+
 down:
   docker compose down -v
+
+# Shows docker compose logs
+logs:
+  docker compose logs

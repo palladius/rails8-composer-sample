@@ -1,24 +1,24 @@
 class CommentsController < ApplicationController
-  before_action :set_blog
+  before_action :set_post
 
   def create
-    @comment = @blog.comments.build(comment_params)
+    @comment = @post.comments.build(comment_params)
     if @comment.save
-      redirect_to @blog, notice: 'Comment was successfully created.'
+      redirect_to @post, notice: 'Comment was successfully created.'
     else
-      redirect_to @blog, alert: 'Error creating comment.'
+      redirect_to @post, alert: 'Error creating comment.'
     end
   end
 
   def destroy
-    @comment = @blog.comments.find(params[:id])
+    @comment = @post.comments.find(params[:id])
     @comment.destroy
-    redirect_to @blog, notice: 'Comment was successfully destroyed.'
+    redirect_to @post, notice: 'Comment was successfully destroyed.'
   end
 
   private
-    def set_blog
-      @blog = Blog.find(params[:blog_id])
+    def set_post
+      @post = Post.find(params[:post_id])
     end
 
     def comment_params

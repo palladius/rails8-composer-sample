@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :blogs do
+  resources :posts do
     resources :comments, only: [:new, :create, :destroy]
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -13,5 +13,5 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  # root "posts#index"
+  root "posts#index"
 end

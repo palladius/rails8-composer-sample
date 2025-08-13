@@ -3,9 +3,9 @@
 one:
   author: MyString
   body: MyText
-  blog: one
+  post: one
 
 two:
   author: MyString
   body: MyText
-  blog: two
+  post: two

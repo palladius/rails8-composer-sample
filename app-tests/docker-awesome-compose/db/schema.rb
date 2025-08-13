@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_12_123430) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_13_092220) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -52,13 +52,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_12_123430) do
   create_table "comments", force: :cascade do |t|
     t.string "author"
     t.text "body"
-    t.bigint "blog_id", null: false
+    t.bigint "post_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["blog_id"], name: "index_comments_on_blog_id"
+    t.index ["post_id"], name: "index_comments_on_post_id"
+  end
+
+  create_table "posts", force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "comments", "blogs"
+  add_foreign_key "comments", "posts"
 end
