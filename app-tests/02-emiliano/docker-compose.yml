@@ -1,0 +1,123 @@
+version: "3.7"
+
+services:
+  db:
+    image: "mysql:5.7"
+    restart: 'no'
+    environment:
+     TZ: Europe/Rome
+     MYSQL_ROOT_PASSWORD: root
+     MYSQL_USERNAME: root
+     MYSQL_PASSWORD: root
+     MYSQL_TCP_PORT: 3307
+    expose:
+      - '3307'
+    volumes:
+      - db:/var/run/mysqld
+      - bundle:/bundle
+    logging:
+      driver: none
+    ports:
+      - "3307:3307"
+
+  cache:
+    image: valkey/valkey:7.2-alpine
+    command: valkey-server --save 60 1 --loglevel warning
+    volumes:
+      - cache:/data
+    ports:
+      - 6379
+    logging:
+      driver: none
+    environment:
+      TZ: Europe/Rome
+
+  sidekiq:
+    build: ./
+    command: bundle exec sidekiq
+    volumes:
+      - .:/rails-app
+    environment:
+      TZ: Europe/Rome
+      GPS_USERNAME: root
+      GPS_PASSWORD: root
+      GPS_DB_NAME: gpsDb
+      GPS_HOSTNAME: db
+      GPS_DB_PORT: 3307
+      RAILS_ENV: development
+      RAILS_MAX_THREADS: 5
+      CACHE_HOST: cache
+      CACHE_PORT: 6379
+    depends_on:
+      - "cache"
+
+  rpush:
+    build: ./
+    command: bundle exec rpush start -f -c /rails-app/config/initializers/rpush.rb -e development
+    volumes:
+      - .:/rails-app
+    environment:
+      TZ: Europe/Rome
+      GPS_USERNAME: root
+      GPS_PASSWORD: root
+      GPS_DB_NAME: gpsDb
+      GPS_HOSTNAME: db
+      GPS_DB_PORT: 3307
+      RAILS_ENV: development
+      RAILS_MAX_THREADS: 5
+      CACHE_HOST: cache
+      CACHE_PORT: 6379
+      RAILS_LOG_TO_STDOUT: 'true'
+    depends_on:
+      - "db"
+      - "cache"
+
+  web:
+    build: ./
+    command: bundle exec rails s -p 3000 -e development -b '0.0.0.0'
+    environment:
+     GPS_USERNAME: root
+     GPS_PASSWORD: root
+     GPS_DB_NAME: gpsDb
+     GPS_HOSTNAME: db
+     GPS_DB_PORT: 3307
+     RAILS_ENV: development
+     RAILS_MAX_THREADS: 5
+     CACHE_HOST: cache
+     CACHE_PORT: 6379
+     BUNDLE_PATH: /bundle
+    volumes:
+      - .:/rails-app
+      - bundle:/bundle
+    ports:
+      - "3000:3000"
+    depends_on:
+      - "db"
+      - "cache"
+
+  test:
+    build: ./
+    command: bundle exec rspec
+    environment:
+      TZ: Europe/Rome
+      GPS_USERNAME: root
+      GPS_PASSWORD: root
+      GPS_DB_NAME: gpsDb_test
+      GPS_HOSTNAME: db
+      GPS_DB_PORT: 3307
+      RAILS_ENV: test
+      RAILS_MAX_THREADS: 5
+      CACHE_HOST: cache
+      CACHE_PORT: 6379
+      BUNDLE_PATH: /bundle
+      AWS_REGION: eu-west-1
+    volumes:
+      - .:/rails-app
+      - bundle:/bundle
+    depends_on:
+      - "db"
+      - "cache"
+volumes:
+  db:
+  bundle:
+  cache:

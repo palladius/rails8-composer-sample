@@ -1,5 +1,9 @@
 # justfile
 
+# Lists the targets
+list:
+    just -l
+
 # Build the Docker images
 build:
     cd rails8-app && docker-compose build
