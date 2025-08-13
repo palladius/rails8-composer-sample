@@ -3,12 +3,10 @@ FROM docker.io/library/ruby:$RUBY_VERSION-slim
 
 WORKDIR /app
 
-ENV BUNDLE_PATH /app/vendor/bundle
-
-RUN apt-get update -qq && apt-get install -y build-essential nodejs postgresql-client libyaml-dev libpq-dev inotify-tools
+RUN apt-get update -qq && apt-get install -y build-essential nodejs postgresql-client libyaml-dev libpq-dev
 
 COPY Gemfile Gemfile.lock ./
-RUN bundle install --jobs $(nproc) --retry 3 --path vendor/bundle
+RUN bundle install --jobs $(nproc) --retry 3
 
 COPY . .
 

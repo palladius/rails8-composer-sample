@@ -8,6 +8,10 @@ dev:
   docker compose up 2>&1 | tee -a log/docker-compose-up.log
 up: dev
 
+app-initialize:
+  echo run this AFTER up..
+  just db-create db-migrate db-seed assets-precompile
+
 # runs "rails console" - requires WEB to be up
 console:
   docker compose exec web rails console
