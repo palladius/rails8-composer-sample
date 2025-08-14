@@ -7,17 +7,6 @@
 # First Service: If no service has a published port, the first service defined in the compose.yaml file is chosen as the ingress, and it will be assigned port 8080.
 
 services:
-  db:
-    image: postgres
-    expose:
-      - "5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-  redis:
-    image: redis:alpine
-    expose:
-      - "6379"
   web:
     build: .
     expose:
@@ -37,3 +26,14 @@ services:
     depends_on:
       - db
       - redis
+  db:
+    image: postgres
+    expose:
+      - "5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+  redis:
+    image: redis:alpine
+    expose:
+      - "6379"
