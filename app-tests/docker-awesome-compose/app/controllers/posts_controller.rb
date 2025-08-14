@@ -9,7 +9,10 @@ class PostsController < ApplicationController
 
   # GET /posts/1 or /posts/1.json
   def show
-    Rails.cache.increment("post_#{@post.id}_views")
+    key = "post_#{@post.id}_views"
+    value = Rails.cache.read(key) || 0
+    new_value = value + 1
+    Rails.cache.write(key, new_value)
   end
 
   # GET /posts/new

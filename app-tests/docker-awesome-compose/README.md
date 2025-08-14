@@ -1,7 +1,14 @@
-
 App:
 
 ![alt text](image.png)
+
+## Features
+
+### View Counter
+
+This application tracks the number of views for each post. The view count is stored in the Rails cache and incremented on each visit to the post's show page.
+
+The implementation uses a manual read-modify-write approach to avoid potential issues with `Rails.cache.increment`.
 
 ## Run this app
 
