@@ -77,3 +77,8 @@ start-redis:
 redis-info:
   docker compose exec web rails runner "puts Rails.cache.redis.info"
 
+cache-view:
+  # @echo First article views:
+  docker-compose exec web rails runner 'puts Rails.cache.read("post_1_views")'
+  # @echo Second article views:
+  docker-compose exec web rails runner 'puts Rails.cache.read("post_2_views")'

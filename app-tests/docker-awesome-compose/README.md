@@ -1,7 +1,8 @@
 App:
 
-![alt text](image.png)
+![Rails Composer Sample v0.0.1](image.png)
 
+![Rails Compose v0.0.3 with counters](image-1.png)
 ## Features
 
 ### View Counter

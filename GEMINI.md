@@ -7,6 +7,11 @@ Main goals of this repo are two:
 1. Demonstrate how to deploy a sample Ruby on Rails 8 app to Google Cloud. This should have all the bells and whistles of a Rails monolith backed by the cloud: uploads of media to GCS, redis for sidekiq, ..
 2. Demonstrate the latest Cloud Run capabilities top run Docker Compose natively. This should make it easier to do two things: test locally a complex multi-docker setup and minim ize local dev vs prod differences, and remove the complexity of Redis/Database for a playground project.
 
+## Note
+
+While the target implementation should be in rails8-app/,
+currently the only app working is under `app-tests/docker-awesome-compose/`!
+
 ## Implementation details
 
 I want to:

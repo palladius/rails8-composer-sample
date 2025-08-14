@@ -68,3 +68,4 @@ end
 
 # Riccardo add ons
 gem "redis", ">= 4.0.1"
+#gem "redis", ">= 5.0"
