@@ -8,6 +8,23 @@ dev:
   docker compose up 2>&1 | tee -a log/docker-compose-up.log
 up: dev
 
+# NEW - deploy to Cloud run with docker compose!
+deploy:
+  echo "Riccardo, first you need to: gcloud auth login ricc@google.com"
+  time gcloud --project ricc-genai alpha run compose up docker-compose.cloudrun.yml
+
+run-proxy-p8888:
+  echo "Riccardo, first you need to ensure ricc@google.com is part of the audience"
+  echo DONE: gcloud --project ricc-genai run services add-iam-policy-binding docker-awesome-compose  --member="user:ricc@google.com" --role="roles/run.invoker"
+  gcloud --project ricc-genai run services proxy docker-awesome-compose --port 8888
+# DANGEROUS - test cloud YML locally but breaks local until you do a "just build".
+test-cloudrun-docker-compose-locally:
+  echo "WARNING - this will break currently build image for local dEV!"
+  echo 1. Build image:
+  docker compose -f docker-compose.cloudrun.yml build
+  echo 2. Run locally
+  docker-compose -f docker-compose.cloudrun.yml up
+
 app-initialize:
   echo run this AFTER up..
   just db-create db-migrate db-seed assets-precompile

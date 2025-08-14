@@ -1,0 +1,39 @@
+# Ingress Container Selection Logic
+# Cloud Run requires a single container to be designated as the ingress (entry point) for external traffic.  The ingress container is determined using the following order of precedence:
+
+# Explicit Extension: The service with the extension x-google-cloudrun-ingress-container: true.
+# Port 8080: If no extension is found, the first service that publishes port 8080 is chosen.
+# Any Published Port: If no service uses port 8080, the first service with any published port is chosen.
+# First Service: If no service has a published port, the first service defined in the compose.yaml file is chosen as the ingress, and it will be assigned port 8080.
+
+services:
+  db:
+    image: postgres
+    expose:
+      - "5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+  redis:
+    image: redis:alpine
+    expose:
+      - "6379"
+  web:
+    build: .
+    expose:
+      - "3000"
+    entrypoint: /usr/bin/cloudrun-entrypoint.sh
+    command: ["rails", "server", "-b", "0.0.0.0"]
+    x-google-cloudrun-ingress-container: true
+    environment:
+      RAILS_ENV: development
+      RAILS_LOG_TO_STDOUT: "true"
+      DATABASE_URL: "postgresql://postgres:password@db:5432/postgres"
+      REDIS_URL: "redis://redis:6379/0"
+      # ERROR: (gcloud.run.services.replace) spec.template.spec.containers[2].env: The following reserved env names were provided: PORT. These values are automatically set by the system.
+      #PORT: "3000"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
