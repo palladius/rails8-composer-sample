@@ -65,3 +65,15 @@ show-db-volume:
 restart-web:
   docker compose restart web
 
+# Stops the redis service
+stop-redis:
+  docker compose stop redis
+
+# Starts the redis service
+start-redis:
+  docker compose start redis
+
+# Shows redis info
+redis-info:
+  docker compose exec web rails runner "puts Rails.cache.redis.info"
+

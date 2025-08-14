@@ -4,10 +4,12 @@ class PostsController < ApplicationController
   # GET /posts or /posts.json
   def index
     @posts = Post.all
+    @view_counts = Rails.cache.read_multi(*@posts.map { |p| "post_#{p.id}_views" })
   end
 
   # GET /posts/1 or /posts/1.json
   def show
+    Rails.cache.increment("post_#{@post.id}_views")
   end
 
   # GET /posts/new

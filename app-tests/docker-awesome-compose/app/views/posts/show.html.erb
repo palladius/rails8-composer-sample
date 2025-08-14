@@ -9,6 +9,10 @@
 
   <%= render @post %>
 
+  <p class="text-gray-500">
+    👀 Views:   <b><%= Rails.cache.read("post_#{@post.id}_views") || 0 %></b>
+  </p>
+
   <% if @post.image.attached? %>
     <%= image_tag @post.image, class: "mt-4 w-full h-64 object-cover rounded-md" %>
   <% end %>
