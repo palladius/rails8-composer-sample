@@ -18,4 +18,11 @@ post1.image.attach(io: File.open(Rails.root.join("db", "sample-images", "ruby-fe
 post1.comments.find_or_create_by!(author: "Alice", body: "Great post!")
 post1.comments.find_or_create_by!(author: "Bob", body: "I learned a lot from this.")
 
-puts "Seeded #{Post.count} posts and #{Comment.count} comments."
+
+
+post2 = Post.find_or_create_by!(title: "My Second Blog Post", content: "This is the content of my second blog post. It's even more exciting!")
+post2.comments.find_or_create_by!(author: "Charlie", body: "Great post!")
+post2.comments.find_or_create_by!(author: "Dick", body: "I learned a lot from this.")
+
+
+puts "🌱 Seeded #{Post.count} posts and #{Comment.count} comments."

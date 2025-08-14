@@ -48,9 +48,20 @@ force-rebuild:
   time docker compose build --no-cache 2>&1 | tee -a log/docker-compose-build-nocache.log
 
 down:
+  docker compose down
+
+down-and-destroy:
   docker compose down -v
 
 # Shows docker compose logs
 logs:
   docker compose logs
+
+# Shows the location of the database volume on your local machine
+show-db-volume:
+  docker volume inspect docker-awesome-compose_db_data
+
+# Restarts the web service
+restart-web:
+  docker compose restart web
 
