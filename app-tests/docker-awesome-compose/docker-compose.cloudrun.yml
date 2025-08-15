@@ -12,7 +12,10 @@ services:
     expose:
       - "8080"
     entrypoint: /usr/bin/cloudrun-entrypoint.sh
-    x-google-cloudrun-ingress-container: true
+    #x-google-cloudrun-ingress-container: true
+    # b/438888510
+    x-google-cloudrun:
+      ingress-container: true
     #command: "echo This is useless due to protobug - check the entrypoint logic"
     environment:
       RAILS_ENV: development
