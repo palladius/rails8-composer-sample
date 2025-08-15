@@ -15,4 +15,5 @@ bundle exec rails db:migrate
 bundle exec rails db:seed
 
 # Then exec the container's main process (what's set as CMD in the Dockerfile).
-exec "$@"
+#exec "$@"
+exec rails server -p '8080' -b '0.0.0.0'  # lets try changing order...

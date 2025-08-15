@@ -10,25 +10,19 @@ services:
   web:
     build: .
     expose:
-      - "3000"
+      - "8080"
     entrypoint: /usr/bin/cloudrun-entrypoint.sh
-#      │    ERROR: (gcloud.run.services.replace) Failed to parse value in                    │
-#  │    protobuf [Service]:                                                              │
-#  │      Service.??: "Expected type <class 'str'> for field args, found 3000            │
-#  │    (type <class 'int'>)"                                                            │
-#  │    exit status 1
-#    command: ["rails", "server", "-b", "0.0.0.0", "-p", "3000"] # gives error of protobuf
-    command: ["rails", "server", "-p", "3000", "-b", "0.0.0.0"] # lets try changing order...
     x-google-cloudrun-ingress-container: true
+    #command: "echo This is useless due to protobug - check the entrypoint logic"
     environment:
       RAILS_ENV: development
       RAILS_LOG_TO_STDOUT: "true"
       DATABASE_URL: "postgresql://postgres:password@db:5432/postgres"
       REDIS_URL: "redis://redis:6379/0"
       # ERROR: (gcloud.run.services.replace) spec.template.spec.containers[2].env: The following reserved env names were provided: PORT. These values are automatically set by the system.
-      PORT: "3000"
+      #PORT: "8080" DO NOT ADD THIS Gemini!!!
     ports:
-      - "3000:3000"
+      - "8080:8080"
     depends_on:
       - db
       - redis
